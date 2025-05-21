@@ -1,0 +1,21 @@
+{
+  "name": "refontesitesquash",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+  "dev": "vite",
+  "watch": "vite",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "laravel-vite-plugin": "^2.0.1",
+    "vite": "^7.1.6"
+  }
+}
