@@ -17,19 +17,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
+        /**
+     * @see UserInterface
      */
-    #[ORM\Column]
-    private array $roles = [];
+    public function getRoles(): array
+    {
+        // Tous les utilisateurs ont au moins ROLE_USER
+        return ['ROLE_USER'];
+    }
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?string $password = null;
+
+    // User-name
+    #[ORM\Column(length: 80)]
+    #[Assert\NotBlank]
+    private ?string $userName = null;
+
+    // Phone
+    #[ORM\Column(length: 30)]
+    private ?string $phone = null;
 
     public function getId(): ?int
     {
@@ -48,6 +62,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getUserName(): ?string
+    {
+        return $this->userName;
+    }
+
+    public function setUserName(string $userName): static
+    {
+        $this->userName = $userName;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -58,27 +96,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /**
-     * @param list<string> $roles
-     */
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
 
     /**
      * @see PasswordAuthenticatedUserInterface
