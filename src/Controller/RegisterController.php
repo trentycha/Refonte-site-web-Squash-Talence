@@ -18,7 +18,7 @@ final class RegisterController extends AbstractController
     {
 
         $user = new User();
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -34,9 +34,9 @@ final class RegisterController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('app_homePage');
-
+        }
         return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
+            'controller_name' => $form->createView(),
         ]);
     }
 }
