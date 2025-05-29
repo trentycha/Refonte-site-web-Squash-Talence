@@ -1,20 +1,103 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomePageController!{% endblock %}
+{% block title %}Squash Talence{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/Refonte-site-web-Squash-Talence/src/Controller/HomePageController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/Refonte-site-web-Squash-Talence/templates/home_page/index.html.twig</code></li>
-    </ul>
+<div style="background-image: url('{{ asset('build/images/homepage.png') }}');
+            background-size: cover;
+            background-position: center;
+            height: 600px;">
+    
+    <div class="start">
+        <h1>Venez squasher à Talence !</h1>
+        <h2>Venez jouer en équipe sur nos terrains tout récemment rénovés, du lundi au dimanche, avec tout le matériel nécessaire à disposition !</h2>
+    </div>
 </div>
+
+<!-- SECTION 1 -->
+<div class="container">
+    <div class="colonne1">
+        <h2 class="titre-resa">N'attendez plus !</h2>
+        <p>Chers amis squashers, Olivier sera heureux de vous accueillir et de vous faire découvrir ses quatre courts. Situé à quelques minutes du 
+            centre de Bordeaux, le Squash de Talence met à votre disposition tous les éléments nécessaires au bon déroulement de vos jeux de squash. 
+            <br><br>Sur place, la boutique vous propose l'ensemble du matériel 
+            spécifique à la pratique du squash, elle vous permet de plus d'essayer les raquettes et de glaner les précieux 
+            conseils. Le bar est ouvert de 10h à 22h30. Vous pourrez vous désaltérer après votre partie, ou y manger selon vos envies.</p>
+    </div>
+
+    <div class="colonne2">
+        <div class="colonne3">
+            <h2 class="resa">Réservez ici !</h2>
+            <p class="txt-resa">Réservez votre créneau en un clic, 
+                <br>quelque soit le jour de la semaine !</p>
+            <button>Je réserve !</button>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="container">
+    <div class="colonne1">
+        <!-- Bloc 1 -->
+        <div class="colonne3">
+            <h2 class="resa">Galerie photo</h2>
+            <p class="txt-resa">Découvrez le club, les terrains et l’ambiance en images.</p>
+            <button>Voir les photos</button>
+        </div>
+
+        <!-- Bloc 2 -->
+        <div class="colonne3">
+            <h2 class="resa">Galerie photo</h2>
+            <p class="txt-resa">Découvrez le club, les terrains et l’ambiance en images.</p>
+            <button>Voir les photos</button>
+        </div>
+    </div>
+
+    <div class="colonne2">
+        <!-- Bloc 1 -->
+        <div class="colonne3">
+            <h2 class="resa">Galerie photo</h2>
+            <p class="txt-resa">Découvrez le club, les terrains et l’ambiance en images.</p>
+            <button>Voir les photos</button>
+        </div>
+
+        <!-- Bloc 2 -->
+        <div class="colonne3">
+            <h2 class="resa">Vidéo de présentation</h2>
+            <p class="txt-resa">Plongez dans l’ambiance du Squash Talence avec notre vidéo immersive.</p>
+            <button>Regarder</button>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section-3">
+    <!-- Carte 1 -->
+    <div class="blog-card">
+        <img src="{{ asset('build/images/blog-tournoi.jpg') }}" alt="Tournoi d’Automne 2025">
+        <h3>Tournoi d’Automne 2025</h3>
+        <p>Retour sur notre grand tournoi de la rentrée ! Ambiance, performances et belles rencontres sur les courts.</p>
+        <a href="#" class="blog-link">Lire l’article</a>
+    </div>
+
+    <!-- Carte 2 -->
+    <div class="blog-card">
+        <img src="{{ asset('build/images/blog-cours.jpg') }}" alt="Cours collectifs de squash">
+        <h3>Nouveaux cours collectifs</h3>
+        <p>Découvrez nos sessions d’entraînement en petit groupe, animées par nos coachs certifiés.</p>
+        <a href="#" class="blog-link">Lire l’article</a>
+    </div>
+
+    <!-- Carte 3 -->
+    <div class="blog-card">
+        <img src="{{ asset('build/images/blog-interview.jpg') }}" alt="Interview du coach Olivier">
+        <h3>Interview d’Olivier, notre coach</h3>
+        <p>Passion, expérience et conseils : plongez dans l’univers de notre coach à travers une interview exclusive.</p>
+        <a href="#" class="blog-link">Lire l’article</a>
+    </div>
+</div>
+
+
+
 {% endblock %}

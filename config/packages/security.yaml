@@ -17,6 +17,7 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AppCustomAuthenticator
+            entry_point: App\Security\AppCustomAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -30,6 +31,13 @@ security:
                 # login form, uncomment the following line to always enable it.
                 #always_remember_me: true
 
+            form_login:
+                login_path: app_login          # route vers le formulaire
+                check_path: app_login          # route utilisée pour vérifier le login
+                default_target_path: /         # redirection après login réussi
+                username_parameter: email      # nom du champ username/email dans le formulaire
+                password_parameter: password   # nom du champ password dans le formulaire
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -39,8 +47,16 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/article/\d+/edit, roles: ROLE_USER }
+        - { path: ^/article/\d+/delete, roles: ROLE_USER }
+        - { path: ^/article/new, roles: ROLE_USER }
+        - { path: ^/profil/\d+, roles: ROLE_USER }
+        - { path: ^/profil/edit/\d+, roles: ROLE_USER }
+        - { path: ^/resaCalendrier, roles: ROLE_USER }
+        - { path: ^/resaCalendrier/\d+, roles: ROLE_USER }
+        - { path: ^/resaCalendrier/edit/\d+, roles: ROLE_USER }
+        - { path: ^/resaCalendrier/delete/\d+, roles: ROLE_USER }
+        - { path: ^/resaCalendrier/all, roles: ROLE_USER }
 
 when@test:
     security:

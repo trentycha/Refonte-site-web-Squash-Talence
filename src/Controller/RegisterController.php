@@ -13,30 +13,30 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class RegisterController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+
+    #[Route('/register', name: 'register')]
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
 
         $user = new User();
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
-
-            // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
-            $user->setRoles(['ROLE_USER']);
-
+        if($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+            $passwordHasher->hashPassword($user, $user->getPassword())
+            );
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_homePage');
+            return $this->redirectToRoute('login');
+        }
 
         return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
+            'user' => $user,
+            'form' => $form->createView(),
+            'controller_name' => 'RegisterController'
         ]);
     }
+    
 }
