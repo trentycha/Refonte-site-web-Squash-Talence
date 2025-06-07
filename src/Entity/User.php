@@ -4,50 +4,78 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Calendrier;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\Table(name: "user_")]
+#[ORM\UniqueConstraint(name: "UNIQ_EMAIL", fields: ["email"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: "Id_user", type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(name: "name", length: 100)]
+    #[Assert\NotBlank]
+    private ?string $name = null;
+
+    #[ORM\Column(name: "firstname", length: 100)]
+    #[Assert\NotBlank]
+    private ?string $firstname = null;
+
+    #[ORM\Column(name: "email", length: 100)]
     #[Assert\NotBlank]
     private ?string $email = null;
 
-        /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        // Tous les utilisateurs ont au moins ROLE_USER
-        return ['ROLE_USER'];
-    }
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    #[Assert\NotBlank]
-    private ?string $password = null;
-
-    // User-name
-    #[ORM\Column(length: 80)]
-    #[Assert\NotBlank]
-    private ?string $userName = null;
-
-    // Phone
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(name: "phone", length: 50)]
     private ?string $phone = null;
 
+    #[ORM\Column(name: "password", length: 100)]
+    private ?string $password = null;
+
+    #[ORM\Column(name: "isSubscribed", type: "boolean")]
+    private bool $isSubscribed = false;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Calendrier::class, orphanRemoval: true)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
+    // --- Getters / Setters ---
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -58,19 +86,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getUserName(): ?string
-    {
-        return $this->userName;
-    }
-
-    public function setUserName(string $userName): static
-    {
-        $this->userName = $userName;
-
         return $this;
     }
 
@@ -82,24 +97,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(string $phone): static
     {
         $this->phone = $phone;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
-
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -108,24 +108,61 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
-    public function __serialize(): array
+    public function isSubscribed(): bool
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
-        return $data;
+        return $this->isSubscribed;
     }
 
-    #[\Deprecated]
+    public function setIsSubscribed(bool $isSubscribed): static
+    {
+        $this->isSubscribed = $isSubscribed;
+        return $this;
+    }
+
+   
+    /**
+     * @return Collection|Calendrier[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Calendrier $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeReservation(Calendrier $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    // --- Implémentations UserInterface ---
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        // rien à faire pour l'instant
     }
 }

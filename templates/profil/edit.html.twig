@@ -1,0 +1,229 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 5rem 0;
+    }
+
+    .profile-container {
+        display: flex;
+        gap: 3rem;
+        max-width: 1200px;
+        width: 90%;
+        margin-top: 2rem;
+    }
+
+    .profile-card, .reservation-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        padding: 2rem 3rem;
+        color: #fff;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .profile-card {
+        flex: 1;
+    }
+
+    .reservation-card {
+        flex: 2;
+    }
+
+    h1, h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: #fff;
+        text-align: left;
+    }
+
+    .profile-info {
+        text-align: left;
+        margin-top: 1rem;
+    }
+
+    .profile-info p {
+        font-size: 1.1rem;
+        margin: 0.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 0.3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .profile-info span {
+        font-weight: 600;
+        color: #ffe57f;
+        margin-right: 1rem;
+        min-width: 120px; /* même largeur pour tous les labels */
+    }
+
+    input, select {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        color: #fff;
+        width: 60%;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    .actions {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    .actions button {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+        font-size: 1rem;
+    }
+
+    .actions button:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th, td {
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: left;
+    }
+
+    th {
+        color: #ffe57f;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .no-reservations {
+        margin-top: 2rem;
+        font-style: italic;
+        color: #ccc;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: left;
+    }
+
+    .form-check input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #ffffff;
+        cursor: pointer;
+        margin-left: 1rem;
+    }
+
+    .btn-danger {
+        background: #e74c3c;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s;
+        text-align: left;
+    }
+
+    .btn-danger:hover {
+        background: #c0392b;
+    }
+</style>
+
+<div class="profile-container">
+
+    <!-- 👤 Profil -->
+    <div class="profile-card">
+        <h1>👤 Mon Profil</h1>
+
+        {{ form_start(form) }}
+        <div class="profile-info">
+            <p><span>Nom :</span> {{ form_widget(form.name) }}</p>
+            <p><span>Prénom :</span> {{ form_widget(form.firstname) }}</p>
+            <p><span>Email :</span> {{ form_widget(form.email) }}</p>
+            <p><span>Téléphone :</span> {{ form_widget(form.phone) }}</p>
+            <p class="form-check">
+                <span>Newsletter :</span> {{ form_widget(form.isSubscribed) }}
+            </p>
+
+        </div>
+
+        <div class="actions">
+            <button type="submit">Enregistrer les modifications</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <!-- Historique des réservations -->
+    <div class="reservation-card">
+        <h2>📅 Mes Réservations</h2>
+
+        {% if user.reservations|length > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Heure</th>
+                        <th>Terrain</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resa in user.reservations %}
+                        <tr>
+                            <td>{{ resa.date ? resa.date|date('d/m/Y') : '' }}</td>
+                            <td>{{ resa.hour ? resa.hour|date('H:i') : '' }}</td>
+                            <td>{{ resa.terrain }}</td>
+                            <td style="text-align:center;">
+                                <form action="{{ path('resa_calendrier_delete', { id: resa.id }) }}" method="post" style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ resa.id) }}">
+                                    <button type="submit" class="btn-danger" onclick="return confirm('Supprimer cette réservation ?');">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-reservations">Aucune réservation trouvée.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

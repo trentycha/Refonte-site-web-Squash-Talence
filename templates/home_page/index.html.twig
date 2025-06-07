@@ -1,20 +1,247 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomePageController!{% endblock %}
+{% block title %}Squash Talence{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+
+    .container-blocs {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 25px;
+    margin: 60px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    }
+
+    .bloc {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.39);
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .text-bloc {
+        padding: 30px 40px 0px 40px;
+    }
+
+    .text-text {
+        padding: 0px 70px 40px 70px;
+    }
+
+    .bloc:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.38);
+    }
+
+    .bloc .icon {
+        width: 60px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .bloc h2 {
+        font-size: 1.4rem;
+        color: #2b2b2b;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .bloc p {
+        color: #555;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+
+    .bloc-img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0 0 20px 20px;
+    margin-top: auto; /* pousse l'image en bas du bloc si besoin */
+    }
+
+    .btn-resa {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        margin-right: 0.5rem;
+        transition: background 0.3s;
+    }
+
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/laragon/www/Refonte-site-web-Squash-Talence/src/Controller/HomePageController.php</code></li>
-        <li>Your template at <code>C:/laragon/www/Refonte-site-web-Squash-Talence/templates/home_page/index.html.twig</code></li>
-    </ul>
+<div style="background-image: url('{{ asset('build/images/homepage.png') }}');
+            background-size: cover;
+            background-position: center;
+            height: 600px;">
+    
+    <div class="start">
+        <h1>Venez squasher à Talence !</h1>
+        <h2>Venez jouer en équipe sur nos terrains tout récemment rénovés, du lundi au dimanche, avec tout le matériel nécessaire à disposition !</h2>
+    </div>
 </div>
+
+<!-- SECTION 1 -->
+<div class="container">
+    <div class="colonne1">
+        <h2 class="titre-resa">N'attendez plus !</h2>
+        <p>Chers amis squashers, Olivier sera heureux de vous accueillir et de vous faire découvrir ses quatre courts. Situé à quelques minutes du 
+            centre de Bordeaux, le Squash de Talence met à votre disposition tous les éléments nécessaires au bon déroulement de vos jeux de squash. 
+            <br><br>Sur place, la boutique vous propose l'ensemble du matériel 
+            spécifique à la pratique du squash, elle vous permet de plus d'essayer les raquettes et de glaner les précieux 
+            conseils. Le bar est ouvert de 10h à 22h30. Vous pourrez vous désaltérer après votre partie, ou y manger selon vos envies.</p>
+    </div>
+
+    <div class="colonne2">
+        <div class="colonne3">
+            <h2 class="resa">Réservez ici !</h2>
+            <p class="txt-resa">Réservez votre créneau en un clic, 
+                <br>quelque soit le jour de la semaine !</p>
+            <a href="{{ path('app_calendrier_reservations') }}" class="btn-resa">Je réserve !</a>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2 -->
+    <div class="container-blocs">
+        <div class="bloc">
+            <h2 class="text-bloc">Terrain de squash</h2>
+            <p class="text-text">Le squash de Talence vous propose 4 terrains avec vestiaires et douches.</p>
+            <img src="{{ asset('build/images/terrain.jpg') }}" alt="terrain" class="bloc-img">
+        </div>
+
+        <div class="bloc">
+            <h2 class="text-bloc">Salle de danse</h2>
+            <p class="text-text">Une salle de danse de 80m² est disponible à l'étage.</p>
+            <img src=".{{ asset('build/images/danse.jpg') }}" alt="salle de danse" class="bloc-img">
+        </div>
+
+        <div class="bloc">
+            <h2 class="text-bloc">Boutique</h2>
+            <p class="text-text">Notre boutique vous propose l'ensemble du matériel nécessaire pour la pratique du squash.</p>
+            <img src="{{ asset('build/images/boutique.jpg') }}" alt="boutique" class="bloc-img">
+        </div>
+
+        <div class="bloc">
+            <h2 class="text-bloc">Bar et snacks</h2>
+            <p class="text-text">Cassez la croûte après votre partie ou désaltérez-vous simplement.</p>
+            <img src="{{ asset('build/images/bar.jpg') }}" alt="bar" class="bloc-img">
+        </div>
+    </div>
+
+    <footer class="glass footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <a href="{{ path('app_home_page') }}" class="logo">
+                <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#e0a3ff"/>
+                            <stop offset="50%" style="stop-color:#ff69b4"/>
+                            <stop offset="100%" style="stop-color:#9370db"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="30" r="8" fill="url(#logoGradient)" opacity="0.8">
+                        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="30" cy="60" r="6" fill="url(#logoGradient)" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="70" cy="65" r="7" fill="url(#logoGradient)" opacity="0.7">
+                        <animate attributeName="opacity" values="0.7;1;0.7" dur="1.8s" repeatCount="indefinite"/>
+                    </circle>
+                    <line x1="50" y1="30" x2="30" y2="60" stroke="url(#logoGradient)" stroke-width="2" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="50" y1="30" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+                    </line>
+                    <line x1="30" y1="60" x2="70" y2="65" stroke="url(#logoGradient)" stroke-width="2" opacity="0.6">
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.8s" repeatCount="indefinite"/>
+                    </line>
+                </svg>
+                Squash Talence
+            </a>
+            </div>
+            <ul class="footer-links">
+                <li><a href="{{ path('app_calendrier_reservations') }}">Réservations</a></li>
+                <li><a href="#infos">Infos Pratiques</a></li>
+                <li><a href="{{ path('app_profil') }}">Mon compte</a></li>
+            </ul>
+            <div class="footer-copy">
+                &copy; {{ "now"|date("Y") }} Squash Talence. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <style>
+    
+    .footer {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding: 30px 20px 20px 20px;
+        color: #fff;
+        text-align: center;
+        max-width: 1200px;
+        margin: 0 auto; 
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0px 20px 20px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .footer-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li a {
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer-links li a:hover {
+        color: #ff69b4;
+    }
+
+    .footer-copy {
+        width: 100%;
+        margin-top: 15px;
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
+    </style>
+
+
 {% endblock %}

@@ -5,107 +5,79 @@ namespace App\Entity;
 use App\Repository\CalendrierRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CalendrierRepository::class)]
+#[ORM\Table(name: "histo_resa")]
 class Calendrier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: "Id_histo_resa", type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $date = null;
+    #[ORM\Column(name: "date_", type: "datetime_immutable")]
+    private ?\DateTimeImmutable $date = null;
 
-    #[ORM\Column]
-    private ?int $horaires = null;
+    #[ORM\Column(name: "hour_", type: "time")]
+    private ?\DateTimeInterface $hour = null;
 
-    #[ORM\Column]
-    private ?bool $statut = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $userName = null;
-
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(name: "terrain_", type: "integer")]
     private ?int $terrain = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $duree = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "id_user", referencedColumnName: "Id_user", nullable: false)]
+    private ?User $user = null;
+
+    // --- Getters / Setters ---
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): ?\DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(\DateTime $date): static
+    public function setDate(\DateTimeImmutable $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
-    public function getHoraires(): ?int
+    public function getHour(): ?\DateTimeInterface
     {
-        return $this->horaires;
+        return $this->hour;
     }
 
-    public function setHoraires(int $horaires): static
+    public function setHour(\DateTimeInterface $hour): static
     {
-        $this->horaires = $horaires;
-
-        return $this;
-    }
-
-    public function isStatut(): ?bool
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(bool $statut): static
-    {
-        $this->statut = $statut;
-
-        return $this;
-    }
-
-    public function getUserName(): ?string
-    {
-        return $this->userName;
-    }
-
-    public function setUserName(?string $userName): static
-    {
-        $this->userName = $userName;
-
+        $this->hour = $hour;
         return $this;
     }
 
     public function getTerrain(): ?int
-    {
-        return $this->terrain;
-    }
+{
+    return $this->terrain;
+}
 
-    public function setTerrain(?int $terrain): static
+    public function setTerrain(int $terrain): static
     {
         $this->terrain = $terrain;
-
         return $this;
     }
 
-    public function getDuree(): ?int
+    public function getUser(): ?User
     {
-        return $this->duree;
+        return $this->user;
     }
 
-    public function setDuree(?int $duree): static
+    public function setUser(?User $user): static
     {
-        $this->duree = $duree;
-
+        $this->user = $user;
         return $this;
     }
 }
